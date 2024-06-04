@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>APIs</title>
+  </head>
+  <body>
+    <div class="mainContainer">
+      <div class="secondaryContainer">
+        <form action="" method="get">
+          <label for="userKeyword">Search for a GIF:</label>
+          <input type="text" id="userKeyword" />
+        </form>
+        <button class="searchBtn">Search</button>
+      </div>
+      <img src="#" onerror="this.style.display='none'" />
+    </div>
+    <script>
+      const img = document.querySelector("img");
+      const searchButton = document.querySelector(".searchBtn");
+      const searchBar = document.querySelector("#userKeyword");
+      const mainContainer = document.querySelector(".mainContainer");
+      const secondaryContainer = document.querySelector(".secondaryContainer");
+      let giphyAPI =
+        "https://api.giphy.com/v1/gifs/translate?api_key=l23Mk69OEJCY2SHaoSGI8O2z29BvhNBP&s=";
+      searchButton.addEventListener("click", (event) => {
+        img.style.display = "block";
+        fetch(giphyAPI + searchBar.value, { mode: "cors" })
+          .then(function (response) {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error("Something went wrong");
+          })
+          .catch((error) => {
+            alert(
+              "ERROR 429: Too many requests. Please wait 5 minutes and try again"
+            );
+          })
+          .then(function (response) {
+            img.src = response.data.images.original.url;
+          });
+      });
+    </script>
+  </body>
+</html>
